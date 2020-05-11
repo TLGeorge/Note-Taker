@@ -22,25 +22,11 @@ const noteDB = [];
 fs.readFile("./db/db.json", "utf8", (err, data) => {
     if (err) throw err;
 
-    //if data exists, then set noteDB equal to it.
+    //if there are existing notes(data), then add it to noteDB array
     if (data) {
         noteDB = JSON.parse(data);
     }
 
-    //Once data is read, establish the routes and start the server
-
-    //Get Routes
-    app.get("/", (req, res) => {
-        res.sendFile("index.html");
-    });
-
-    app.get("/notes", (req, res) => {
-        res.sendFile("notes.html", { root: "public" });
-    });
-
-    app.get("/api/notes", (req, res) => {
-        return res.json(noteDB);
-    });
 
     //Post Route
     app.post("/api/notes", (req, res) => {

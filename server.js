@@ -6,7 +6,7 @@ var { v4: uuidv4 } = require('uuid');
 
 // Sets up the Express App
 var app = express();
-var PORT = process.env.PORT || 8000
+var PORT = process.env.PORT || 9000
 
 // Automatically creates routes to host files in the public folder 
 app.use(express.static("public"));
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Array for Notes to be populated when notes are created
-const noteDB = [];
+var noteDB = [];
 
 //Read from db.json
 fs.readFile("./db/db.json", "utf8", (err, data) => {
@@ -27,6 +27,18 @@ fs.readFile("./db/db.json", "utf8", (err, data) => {
         noteDB = JSON.parse(data);
     }
 
+    // Get route
+    app.get("/", (req, res) => {
+        res.sendFile("index.html");
+    });
+
+    app.get("/notes", (req, res) => {
+        res.sendFile("notes.html", { root: "public" });
+    });
+
+    app.get("/api/notes", (req, res) => {
+        return res.json(noteDB);
+    });
 
     //Post Route
     app.post("/api/notes", (req, res) => {
